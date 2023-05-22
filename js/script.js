@@ -20,6 +20,15 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+
+const sizes = {
+    'a0': [1189, 841],
+    'a1': [841, 595],
+    'a2': [595, 420],
+    'a3': [420, 297],
+    'a4': [297, 210],
+    'a5': [210, 148],
+}
  
 mapboxgl.accessToken = '';
 
@@ -167,8 +176,7 @@ function isError() {
 
 form.widthInput.addEventListener('change', function(e) {
     'use strict';
-    var unit = form.unitOptions[0].checked ? 'in' : 'mm';
-    var val = (unit == 'mm') ? Number(e.target.value / 25.4) : Number(e.target.value);
+    var val = Number(e.target.value / 25.4);
     var dpi = Number(form.dpiInput.value);
     if (val > 0) {
         if (val * dpi > maxSize) {
@@ -180,7 +188,7 @@ form.widthInput.addEventListener('change', function(e) {
             errors.width.msg = 'The width is unreasonably big!';
         } else {
             errors.width.state = false;
-            if (unit == 'mm') val *= 25.4;
+            val *= 25.4;
             document.getElementById('map').style.width = toPixels(val);
             map.resize();
         }
@@ -193,8 +201,7 @@ form.widthInput.addEventListener('change', function(e) {
 
 form.heightInput.addEventListener('change', function(e) {
     'use strict';
-    var unit = form.unitOptions[0].checked ? 'in' : 'mm';
-    var val = (unit == 'mm') ? Number(e.target.value / 25.4) : Number(e.target.value);
+    var val = Number(e.target.value / 25.4);
     var dpi = Number(form.dpiInput.value);
     if (val > 0) {
         if (val * dpi > maxSize) {
@@ -206,7 +213,7 @@ form.heightInput.addEventListener('change', function(e) {
             errors.height.msg = 'The height is unreasonably big!';
         } else {
             errors.height.state = false;
-            if (unit == 'mm') val *= 25.4;
+            val *= 25.4;
             document.getElementById('map').style.height = toPixels(val);
             map.resize();
         }
@@ -249,24 +256,6 @@ form.styleSelect.addEventListener('change', function() {
         document.getElementById('stadiamaps-attribution').style.display = 'block';
     }
 });
-
-form.mmUnit.addEventListener('change', function() {
-    'use strict';
-    form.widthInput.value *= 25.4;
-    form.heightInput.value *= 25.4;
-});
-
-form.inUnit.addEventListener('change', function() {
-    'use strict';
-    form.widthInput.value /= 25.4;
-    form.heightInput.value /= 25.4;
-});
-
-if (form.unitOptions[1].checked) {
-    // Millimeters
-    form.widthInput.value *= 25.4;
-    form.heightInput.value *= 25.4;
-}
 
 form.latInput.addEventListener('change', function() {
     'use strict';
@@ -333,16 +322,36 @@ function measureScrollbar() {
 
 function toPixels(length) {
     'use strict';
-    var unit = form.unitOptions[0].checked ? 'in' : 'mm';
-    var conversionFactor = 96;
-    if (unit == 'mm') {
-        conversionFactor /= 25.4;
-    }
+    var conversionFactor = 96 / 25.4;
 
     return conversionFactor * length + 'px';
 }
 
+function updateSize(sizeKey) {
+    const size = sizes[sizeKey];
+    form.widthInput.value = size[0];
+    form.heightInput.value = size[1];
+    form.widthInput.dispatchEvent(new Event('change'));
+    form.heightInput.dispatchEvent(new Event('change'));
+}
 
+function initializeSizeButtons() {
+    for (const size of Object.keys(sizes)) {
+        document.getElementById('size-' + size).addEventListener('click', () => updateSize(size));
+    }
+}
+
+initializeSizeButtons();
+
+document.getElementById('swap').addEventListener('click', swapSizes);
+
+function swapSizes() {
+    const width = form.widthInput.value;
+    form.widthInput.value = form.heightInput.value;
+    form.heightInput.value = width;
+    form.widthInput.dispatchEvent(new Event('change'));
+    form.heightInput.dispatchEvent(new Event('change'));
+}
 
 //
 // High-res map rendering
@@ -369,8 +378,6 @@ function generateMap() {
 
     var format = form.outputOptions[0].checked ? 'png' : 'pdf';
 
-    var unit = form.unitOptions[0].checked ? 'in' : 'mm';
-
     var style = form.styleSelect.value;
 
     var zoom = map.getZoom();
@@ -378,11 +385,11 @@ function generateMap() {
     var bearing = map.getBearing();
     var pitch = map.getPitch();
 
-    createPrintMap(width, height, dpi, format, unit, zoom, center,
+    createPrintMap(width, height, dpi, format, zoom, center,
         bearing, style, pitch);
 }
 
-function createPrintMap(width, height, dpi, format, unit, zoom, center,
+function createPrintMap(width, height, dpi, format, zoom, center,
     bearing, style, pitch) {
     'use strict';
 
@@ -422,7 +429,7 @@ function createPrintMap(width, height, dpi, format, unit, zoom, center,
         } else {
             var pdf = new jsPDF({
                 orientation: width > height ? 'l' : 'p',
-                unit: unit,
+                unit: 'mm',
                 format: [width, height],
                 compress: true
             });

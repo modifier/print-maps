@@ -63,3 +63,22 @@ body {
                 transform: rotate(180deg);
     }
 }
+
+#swap {
+    border: 0;
+    background: transparent;
+    width: 24px;
+    padding: 0;
+}
+
+.size-row .col-sm-5,
+.size-row .col-sm-2 {
+    padding: 0;
+}
+
+.swap-wrapper {
+    margin-top: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

@@ -27,26 +27,31 @@
 <form onsubmit="generateMap(); return false;" id="config">
   <fieldset id="config-fields">
   <div class="row">
-    <div class="col-sm-4">
-      <div class="form-group">
-        <label>Unit</label><br>
-        <label class="radio-inline">
-          <input type="radio" name="unitOptions" value="in" id="inUnit" checked> Inch
-        </label>
-        <label class="radio-inline">
-          <input type="radio" name="unitOptions" value="mm" id="mmUnit"> Millimeter
-        </label>
+    <div class="col-sm-4 size-row">
+      <div class="col-sm-5">
+        <div class="form-group" id="widthGroup">
+          <label for="widthInput">Width</label>
+          <input type="text" class="form-control" id="widthInput" autocomplete="off" value="297">
+        </div>
+      </div>
+      <div class="col-sm-2 swap-wrapper">
+        <button type="button" id="swap">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 12c0-1.232-.046-2.453-.138-3.662a4.006 4.006 0 00-3.7-3.7 48.678 48.678 0 00-7.324 0 4.006 4.006 0 00-3.7 3.7c-.017.22-.032.441-.046.662M19.5 12l3-3m-3 3l-3-3m-12 3c0 1.232.046 2.453.138 3.662a4.006 4.006 0 003.7 3.7 48.656 48.656 0 007.324 0 4.006 4.006 0 003.7-3.7c.017-.22.032-.441.046-.662M4.5 12l3 3m-3-3l-3 3" />
+          </svg>
+        </button>
+      </div>
+      <div class="col-sm-5">
+        <div class="form-group" id="heightGroup">
+          <label for="heightInput">Height</label>
+          <input type="text" class="form-control" id="heightInput" autocomplete="off" value="210">
+        </div>
       </div>
     </div>
     <div class="col-sm-3">
-      <div class="form-group">
-        <label>Output format</label><br>
-        <label class="radio-inline">
-          <input type="radio" name="outputOptions" value="png" checked> PNG
-        </label>
-        <label class="radio-inline">
-          <input type="radio" name="outputOptions" value="pdf"> PDF
-        </label>
+      <div class="form-group" id="dpiGroup">
+        <label for="dpiInput">DPI</label>
+        <input type="text" class="form-control" id="dpiInput" autocomplete="off" value="300">
       </div>
     </div>
     <div class="col-sm-5">
@@ -67,22 +72,28 @@
     </div>
   </div>
   <div class="row">
-    <div class="col-sm-2">
-      <div class="form-group" id="widthGroup">
-        <label for="widthInput">Width</label>
-        <input type="text" class="form-control" id="widthInput" autocomplete="off" value="8">
-      </div>
-    </div>
-    <div class="col-sm-2">
-      <div class="form-group" id="heightGroup">
-        <label for="heightInput">Height</label>
-        <input type="text" class="form-control" id="heightInput" autocomplete="off" value="6">
+    <div class="col-sm-4">
+      <div class="form-group">
+        <label>Size</label>
+        <div>
+          <button type="button" class="btn btn-primary" id="size-a5">A5</button>
+          <button type="button" class="btn btn-primary" id="size-a4">A4</button>
+          <button type="button" class="btn btn-primary" id="size-a3">A3</button>
+          <button type="button" class="btn btn-primary" id="size-a2">A2</button>
+          <button type="button" class="btn btn-primary" id="size-a1">A1</button>
+          <button type="button" class="btn btn-primary" id="size-a0">A0</button>
+        </div>
       </div>
     </div>
     <div class="col-sm-3">
-      <div class="form-group" id="dpiGroup">
-        <label for="dpiInput">DPI</label>
-        <input type="text" class="form-control" id="dpiInput" autocomplete="off" value="300">
+      <div class="form-group">
+        <label>Output format</label><br>
+        <label class="radio-inline">
+          <input type="radio" name="outputOptions" value="png" checked> PNG
+        </label>
+        <label class="radio-inline">
+          <input type="radio" name="outputOptions" value="pdf"> PDF
+        </label>
       </div>
     </div>
     <div class="col-sm-5">

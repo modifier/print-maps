@@ -79,6 +79,11 @@ try {
     map.addControl(new mapboxgl.NavigationControl());
     map.on('moveend', updateLocationInputs).on('zoomend', updateLocationInputs);
     updateLocationInputs();
+    setTimeout(() => {
+
+        form.widthInput.dispatchEvent(new Event('change'));
+        form.heightInput.dispatchEvent(new Event('change'));
+    });
 } catch (e) {
     var mapContainer = document.getElementById('map');
     mapContainer.parentNode.removeChild(mapContainer);

@@ -64,6 +64,26 @@ function updateLocationInputs() {
     form.zoomInput.value = zoom;
     form.latInput.value = lat;
     form.lonInput.value = lon;
+    updateLocationStorage();
+}
+
+function updateLocationStorage() {
+    let zoom = form.zoomInput.value;
+    let lat = form.latInput.value;
+    let lon = form.lonInput.value;
+    localStorage.setItem('location', JSON.stringify({ zoom, lat, lon }));
+}
+
+function updateFromLocationStorage() {
+    const storage = localStorage.getItem('location');
+    try {
+        const { zoom, lat, lon } = JSON.parse(storage);
+        form.zoomInput.value = zoom;
+        form.latInput.value = lat;
+        form.lonInput.value = lon;
+        map.setCenter([lon, lat]);
+        map.setZoom(zoom);
+    } catch (e) {}
 }
 
 var map;
@@ -78,9 +98,8 @@ try {
     });
     map.addControl(new mapboxgl.NavigationControl());
     map.on('moveend', updateLocationInputs).on('zoomend', updateLocationInputs);
-    updateLocationInputs();
+    updateFromLocationStorage();
     setTimeout(() => {
-
         form.widthInput.dispatchEvent(new Event('change'));
         form.heightInput.dispatchEvent(new Event('change'));
     });
@@ -265,16 +284,19 @@ form.styleSelect.addEventListener('change', function() {
 form.latInput.addEventListener('change', function() {
     'use strict';
     map.setCenter([form.lonInput.value, form.latInput.value]);
+    updateLocationStorage();
 });
 
 form.lonInput.addEventListener('change', function() {
     'use strict';
     map.setCenter([form.lonInput.value, form.latInput.value]);
+    updateLocationStorage();
 });
 
 form.zoomInput.addEventListener('change', function(e) {
     'use strict';
     map.setZoom(e.target.value);
+    updateLocationStorage();
 });
 
 

@@ -368,7 +368,17 @@ function initializeSizeButtons() {
     }
 }
 
+function initializeScale() {
+    const map = document.getElementById('map');
+    document.getElementById('scale').addEventListener('input', function(e) {
+        const value = 2 ** (e.target.value - 4);
+
+        map.style.zoom = value;
+    });
+}
+
 initializeSizeButtons();
+initializeScale();
 
 document.getElementById('swap').addEventListener('click', swapSizes);
 

@@ -119,6 +119,23 @@
       </div>
     </div>
   </div>
+    <div class="row">
+      <div class="col-sm-4">
+        <div class="form-group">
+          <label>Scale</label>
+          <div class="scale-box">
+            <input type="range" value="4" min="1" max="5" id="scale" list="scale-markers" step="any" />
+            <datalist id="scale-markers">
+              <option value="1" label="12.5%"></option>
+              <option value="2" label="25%"></option>
+              <option value="3" label="50%"></option>
+              <option value="4" label="100%"></option>
+              <option value="5" label="200%"></option>
+            </datalist>
+          </div>
+        </div>
+      </div>
+    </div>
   </fieldset>
 </form>
 <div class="alert alert-danger" role="alert" id="error-message"></div>

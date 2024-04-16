@@ -89,3 +89,14 @@ body {
     width: calc(100vw - 20px);
     margin: 0 calc(-1 * (100vw - 20px - 100%) / 2);
 }
+
+datalist {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+}
+
+option {
+    padding: 0;
+}
